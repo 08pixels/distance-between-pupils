@@ -4,7 +4,8 @@ import argparse
 import imutils
 import dlib
 import cv2
-
+import time
+import homemade_measure
 # construct the argument parser and parse the arguments
 
 ap = argparse.ArgumentParser()
@@ -21,7 +22,7 @@ predictor = dlib.shape_predictor(args['shape_predictor'])
 
 # load the image, resize it, and conver it to grayscale
 image = cv2.imread(args['image'])
-image = imutils.resize(image, width=500)
+# image = imutils.resize(image, width=500)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 # detect faces in the grayscale image
@@ -41,13 +42,17 @@ for (i, rect) in enumerate(rects):
   cv2.rectangle(image, (x,y), (x + w, y + h), (0, 255, 0), 2)
 
   # show the face number
-  cv2.putText(image, 'Face #{}'.format(i + 1), (x - 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+  cv2.putText(image, 'Face #{}'.format(i + 1), (x - 10, y - 10),
+              cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
   # loop over the (x, y)-coordinates for the facial landmarks
   # and draw them on the image
-  for (x, y) in shape:
+  for (j, (x, y)) in enumerate(shape):
     cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
+    # cv2.putText(image, '{}'.format(j), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
 
 # show the output image with the face detection + facial landmarks
-cv2.imshow('Output', image)
-cv2.waitKey(0)
+# cv2.imshow('Output', image)
+# cv2.waitKey(0)
+cv2.imwrite('./output/{}.jpg'.format(time.time()), image)
