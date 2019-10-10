@@ -48,7 +48,10 @@ for (i, rect) in enumerate(rects):
   # loop over the (x, y)-coordinates for the facial landmarks
   # and draw them on the image
   for (j, (x, y)) in enumerate(shape):
-    cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
+    if(j in [37, 38, 40, 41, 43, 44, 46, 47]):
+      cv2.circle(image, (x, y), 1, (255, 0, 0), -1)
+    else:
+      cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
     # cv2.putText(image, '{}'.format(j), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
 
