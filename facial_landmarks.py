@@ -1,11 +1,11 @@
 from imutils import face_utils
+from pupil_distance import *
 import numpy as np
 import argparse
 import imutils
 import dlib
 import cv2
 import time
-import homemade_measure
 # construct the argument parser and parse the arguments
 
 ap = argparse.ArgumentParser()
@@ -54,8 +54,29 @@ for (i, rect) in enumerate(rects):
       cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
     # cv2.putText(image, '{}'.format(j), (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
+  # estimating pupil center from known points 
+  left_pupil = Pupil(shape[37], shape[40],
+      shape[41], shape[38]).central_point
+
+  right_pupil = Pupil(shape[43], shape[46],
+      shape[47],shape[44]).central_point
+
+  # drawing central points and showing informations
+  cv2.circle(image, (int(left_pupil.x), int(left_pupil.y)), 1, (0, 0, 255), -1)
+  cv2.circle(image, (int(right_pupil.x), int(right_pupil.y)), 1, (0, 0, 255), -1)
+
+  cv2.line(image,
+          (int(left_pupil.x), int(left_pupil.y)),
+          (int(right_pupil.x), int(right_pupil.y)),
+          (170,178,32), 1)
+
+  pupil_distance = Pupil.distance(left_pupil, right_pupil)
+  cv2.putText(image, 'distance: {:.2f} px'.format(pupil_distance), (int(left_pupil.x), int(left_pupil.y)),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 255, 0), 1)
 
 # show the output image with the face detection + facial landmarks
 # cv2.imshow('Output', image)
 # cv2.waitKey(0)
+
+
 cv2.imwrite('./output/{}.jpg'.format(time.time()), image)
