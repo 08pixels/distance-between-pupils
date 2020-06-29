@@ -18,4 +18,4 @@ The distance was calculated using euclidean distance
 ![](assets/line_intersection.jpg)
 ![](assets/distance.jpg)
 
-### [Full Tutorial](https://www.pyimagesearch.com/2017/04/03/facial-landmarks-dlib-opencv-python/)
+### [Reference Tutorial](https://www.pyimagesearch.com/2017/04/03/facial-landmarks-dlib-opencv-python/)
